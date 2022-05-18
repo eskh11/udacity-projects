@@ -37,7 +37,7 @@ let sections = document.querySelectorAll("section");
  *
  */
 
-// build the nav
+// build the nav with for loop depending on the number of the sections in the document
 for (let i = 0; i < numberOfSection; i++) {
   let li = document.createElement("li");
   let link = document.createElement("a");
@@ -47,12 +47,12 @@ for (let i = 0; i < numberOfSection; i++) {
   li.appendChild(link);
   ul.appendChild(li);
 }
-// Helper Function
+// Helper Function to remove the active class from sections
 
 sections.forEach(function (ele) {
   ele.classList.remove("your-active-class");
 });
-// Set sections as active
+// Set sections as active on scrolling by adding "your-active-class" class to section with getBoundingClientReact()
 document.addEventListener("scroll", function () {
   if (
     window.scrollY >= sections[0].getBoundingClientRect().y + window.scrollY &&
@@ -94,6 +94,7 @@ document.addEventListener("scroll", function () {
 window.addEventListener("load", function () {
   let links = this.document.querySelectorAll("li  a");
   links.forEach(function (ele) {
+    // function to return the section to scroll to depending on data-nav attr
     function reele() {
       let Sec = "";
       for (let i = 0; i < sections.length; i++) {
@@ -103,12 +104,62 @@ window.addEventListener("load", function () {
       }
       return Sec;
     }
+    // scroll to section on nav links click
     ele.addEventListener("click", function (e) {
       e.preventDefault();
       window.scrollTo({
         top: reele().getBoundingClientRect().top + window.scrollY + 10,
         behavior: "smooth",
       });
+    });
+    // add active class on nav links on click
+    ele.addEventListener("click", function (e) {
+      links.forEach(function (ele) {
+        ele.classList.remove("active");
+      });
+      e.target.classList.add("active");
+    });
+    // add active class on nav links on scroll
+    document.addEventListener("scroll", function () {
+      if (
+        window.scrollY >=
+          sections[0].getBoundingClientRect().y + window.scrollY &&
+        window.scrollY <
+          sections[0].getBoundingClientRect().bottom + window.scrollY
+      ) {
+        links.forEach(function (ele) {
+          ele.classList.remove("active");
+        });
+        links[0].classList.add("active");
+      } else if (
+        window.scrollY >=
+          sections[1].getBoundingClientRect().y + window.scrollY &&
+        window.scrollY <
+          sections[1].getBoundingClientRect().bottom + window.scrollY
+      ) {
+        links.forEach(function (ele) {
+          ele.classList.remove("active");
+        });
+        links[1].classList.add("active");
+      } else if (
+        window.scrollY >=
+          sections[2].getBoundingClientRect().y + window.scrollY &&
+        window.scrollY <=
+          sections[2].getBoundingClientRect().bottom + window.scrollY
+      ) {
+        links.forEach(function (ele) {
+          ele.classList.remove("active");
+        });
+        links[2].classList.add("active");
+      } else if (
+        window.scrollY >=
+        sections[3].getBoundingClientRect().y + window.scrollY
+      ) {
+        links.forEach(function (ele) {
+          ele.classList.remove("active");
+        });
+        links[3].classList.add("active");
+      }
     });
   });
 });
